@@ -8,4 +8,4 @@
 <p>{{street}}
 <p>{{postal}}</p>
 <p>{{locality}}</p>
-<a href="/menu/{{menu}}">Show menu</p>
+<a href="/menu/{{menu}}?cp={{name}}">Show menu</p>

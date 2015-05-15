@@ -1,6 +1,6 @@
 __author__ = 'mvidalgarcia'
 
-from bottle import route, run, view
+from bottle import route, run, view, request
 from .persistence.rdf_dao import RDFDao
 
 rdfdao = RDFDao()
@@ -26,6 +26,7 @@ def coffeeplace(id):
 @route('/menu/<id>')
 @view('menu')
 def menu(id):
-    return dict(menu=rdfdao.get_menu_products(id))
+    return dict(cp=request.params.cp,
+                menu=rdfdao.get_menu_products(id))
 
 
