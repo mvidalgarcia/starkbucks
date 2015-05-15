@@ -3,6 +3,7 @@ __author__ = 'mvidalgarcia'
 from SPARQLWrapper import SPARQLWrapper, JSON
 from starkbucks.model.starkbucks import Starkbucks
 from starkbucks.model.coffee_shop import CoffeeShop
+from starkbucks.model.product import Product
 import os
 
 path = os.path.dirname(__file__)
@@ -90,7 +91,7 @@ class RDFDao:
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
         PREFIX georss: <http://www.georss.org/georss/>
         PREFIX dbo: <http://dbpedia.org/ontology/>
-        SELECT ?name ?phone ?coords ?email ?address ?country ?street ?postal ?locality WHERE {{
+        SELECT ?name ?phone ?coords ?email ?address ?country ?street ?postal ?locality ?menu WHERE {{
           ?cs       a   schema:CafeOrCoffeeShop ;
                     :id {id} ;
                     rdfs:label              ?name ;
@@ -98,7 +99,8 @@ class RDFDao:
                     georss:point            ?coords ;
                     schema:email            ?email ;
                     schema:address          ?address ;
-                    dbo:country             ?country_uri .
+                    dbo:country             ?country_uri ;
+                    schema:menu             ?menu .
           ?address  schema:streetAddress    ?street ;
                     schema:postalCode       ?postal ;
                     schema:addressLocality  ?locality_uri
@@ -119,6 +121,47 @@ class RDFDao:
             return CoffeeShop(result[0])
 
         return None
+
+    def get_menu_products(self, menu, lang='en'):
+        """
+        Retrieves information about a café
+        :param id: Coffee shop identifier
+        :return: CoffeeShop object
+        """
+        self.sparql_q.resetQuery()
+        self.sparql_q.setQuery("""
+        PREFIX : <http://starkbucks.es/>
+        PREFIX schema: <http://schema.org/>
+        PREFIX dc: <http://purl.org/dc/elements/1.1/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+        PREFIX georss: <http://www.georss.org/georss/>
+        PREFIX dbo: <http://dbpedia.org/ontology/>
+        PREFIX dbr: <http://dbpedia.org/resource/>
+        SELECT * WHERE {{
+          :{menu}    a               dbr:Menu ;
+                    schema:Product  ?prod_uri .
+          ?prod_uri rdfs:label      ?name ;
+                    schema:price    ?price ;
+                    schema:priceCurrency    ?currency ;
+                    foaf:depiction  ?photo ;
+                    a               ?type_uri .
+          FILTER (lang(?name)='{lang}')
+          SERVICE <http://dbpedia.org/sparql> {{
+            ?type_uri rdfs:comment ?description .
+            FILTER (lang(?description)='{lang}')
+          }}
+        }}
+        """.format(menu=menu, lang=lang))
+
+        self.sparql_q.setReturnFormat(JSON)
+        results = self.sparql_q.query().convert()
+
+        products = set()
+        for result in results["results"]["bindings"]:
+            products.add(Product(result))
+
+        return products
 
     def example(self):
         self.sparql_q.resetQuery()
@@ -149,7 +192,9 @@ class RDFDao:
             print(result["res"]["value"])
 
     def restart_db(self):
-        # Empty database
+        """
+        Empties Fuseki database and populates it again with data in db.sparql
+        """
         self.sparql_u.resetQuery()
         self.sparql_u.setQuery('CLEAR ALL')
         self.sparql_u.method = 'POST'

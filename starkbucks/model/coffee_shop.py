@@ -12,3 +12,4 @@ class CoffeeShop:
         self.street = sparqldict["street"]["value"]
         self.postal = sparqldict["postal"]["value"]
         self.locality = sparqldict["locality"]["value"]
+        self.menu = sparqldict["menu"]["value"].split('/')[-1]
