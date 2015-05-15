@@ -40,7 +40,7 @@ INSERT DATA {
             dbo:country dbr:Spain ;
             georss:point "43.3589134 -5.8608736" ;
             schema:email "modoo@starkbucks.es" ;
-            schema:menu :m1 .
+            schema:menu :m2 .
 
 
     # Addresses

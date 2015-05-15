@@ -1,6 +1,5 @@
 __author__ = 'mvidalgarcia'
 
-from starkbucks.starkbucks import Starkbucks
+from starkbucks import starkbucks
 
-stark = Starkbucks()
-stark.run()
+starkbucks.start()
