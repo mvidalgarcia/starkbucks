@@ -10,23 +10,22 @@ def start():
     run(host='0.0.0.0', port=8080, debug=True, reloader=True)
 
 
-@route('/hello')
+@route('/')
 @view('index')
 def index():
-    return rdfdao.get_starkbucks_info().__dict__
+    return dict(starkbucks=rdfdao.get_starkbucks_info(),
+                locals=rdfdao.get_coffee_shops())
 
 
-
-    # rdfdao.restart_db()
-    # rdfdao.example()
-    # print(rdfdao.get_starkbucks_info().__dict__)
-    # print(rdfdao.get_coffee_shops())
-    # coffee_shop = rdfdao.get_coffee_shop(2)
-    # print(coffee_shop.menu)
-    # products = rdfdao.get_menu_products(coffee_shop.menu)
-    # for product in products:
-    #     print(product.__dict__)
+@route('/coffeeplace/<id>')
+@view('coffeeplace')
+def coffeeplace(id):
+    return rdfdao.get_coffee_shop(id).__dict__
 
 
+@route('/menu/<id>')
+@view('menu')
+def menu(id):
+    return dict(menu=rdfdao.get_menu_products(id))
 
 
