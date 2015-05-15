@@ -1,0 +1,100 @@
+PREFIX : <http://starkbucks.es/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX georss: <http://www.georss.org/georss/>
+
+INSERT DATA {
+
+    # Main definition
+
+    :starkbucks owl:sameAs dbr:Starbucks ;
+                rdfs:label "Starkbucks" ;
+                foaf:depiction "http://fc01.deviantart.net/fs71/f/2013/262/7/7/starkbucks_coffee_by_benfclark-d6mwgrs.jpg" .
+
+
+    # Coffee places
+
+    _:cp1 	:id 1 ;
+            a schema:CafeOrCoffeeShop ;
+            dc:subject :starkbucks ;
+            rdfs:label "Starkbucks Parque Principado" ;
+            foaf:phone 985111111 ;
+            schema:address _:addr1 ;
+            dbo:country dbr:Spain ;
+            georss:point "43.389992 -5.804725" ;
+            schema:email "principado@starkbucks.es" ;
+            schema:menu _:m1 .
+
+    _:cp2 	:id 2 ;
+            a schema:CafeOrCoffeeShop ;
+            dc:subject :starkbucks ;
+            rdfs:label "Starkbucks Modoo" ;
+            foaf:phone 985222222 ;
+            schema:address _:addr2 ;
+            dbo:country dbr:Spain ;
+            georss:point "43.3589134 -5.8608736" ;
+            schema:email "modoo@starkbucks.es" ;
+            schema:menu _:m1 .
+
+
+    # Addresses
+
+    _:addr1 schema:streetAddress "Autovía A-66, Km 4,5 (acceso Santander)" ;
+            schema:addressLocality <http://dbpedia.org/resource/Lugones_(Siero)> ; # Bug when brackets
+            schema:postalCode "33429" ;
+            schema:addressCountry "ES" .
+
+    _:addr2 schema:streetAddress "C/ Arturo Pérez Buylla, 5, Centro Comercial Espacio Buenavista. Local 3.46" ;
+            schema:addressLocality dbr:Oviedo ;
+            schema:postalCode "33005" ;
+            schema:addressCountry "ES" .
+
+    # Menus
+
+    _:m1	a dbr:Menu ;
+            schema:Product _:prod1 ;
+            schema:Product _:prod2 ;
+            schema:Product _:prod4 .
+
+    _:m2	a dbr:Menu ;
+            schema:Product _:prod1 ;
+            schema:Product _:prod2 ;
+            schema:Product _:prod3 .
+
+    # Products (Images from www.starbucks.com)
+
+    _:prod1 dc:type dbr:Coffee ;
+            a dbr:Cappuccino ;
+            rdfs:label "Capuccino" ;
+            schema:price 3.25 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/43c3301d81bd4ea4a9fec5beaf43a541.jpg" .
+
+    _:prod2 dc:type dbr:Coffee ;
+            a dbr:Latte ;
+            rdfs:label "Caffè Latte" ;
+            schema:price 1.95 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/20229527c1c240439ddbc81bf821d95e.jpg" .
+
+    _:prod3 dc:type dbr:Coffee ;
+            a dbr:Latte_macchiato ;
+            rdfs:label "Caramel Macchiato" ;
+            schema:price 3.5 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/130690c11fe64de192cdf74bae6cb019.jpg" .
+
+    _:prod4 dc:type dbr:Chocolate ;
+            a dbr:Hot_chocolate ;
+            rdfs:label "Hot Chocolate" ;
+            schema:price 2.15 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/f6d9e4e674cd4859b6f66a3a34b1e973.jpg" .
+
+}
