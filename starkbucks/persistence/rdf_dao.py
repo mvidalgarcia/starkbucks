@@ -2,7 +2,7 @@ __author__ = 'mvidalgarcia'
 
 from SPARQLWrapper import SPARQLWrapper, JSON
 from starkbucks.model.starkbucks import Starkbucks
-from starkbucks.model.coffee_shop import CoffeeShop
+from starkbucks.model.coffee_place import CoffeePlace
 from starkbucks.model.product import Product
 import os
 
@@ -50,7 +50,7 @@ class RDFDao:
 
         return None
 
-    def get_coffee_shops(self):
+    def get_coffee_places(self):
         """
         Retrieves basic info about cafés.
         :return: Name and id
@@ -70,17 +70,17 @@ class RDFDao:
         self.sparql_q.setReturnFormat(JSON)
         results = self.sparql_q.query().convert()
 
-        coffee_shops = []
+        coffee_places = []
         for result in results["results"]["bindings"]:
-            coffee_shops.append({'name': result["name"]["value"],
+            coffee_places.append({'name': result["name"]["value"],
                                  'id': result["id"]["value"]})
-        return coffee_shops
+        return coffee_places
 
-    def get_coffee_shop(self, id, lang='en'):
+    def get_coffee_place(self, id, lang='en'):
         """
         Retrieves information about a café
-        :param id: Coffee shop identifier
-        :return: CoffeeShop object
+        :param id: Coffee place identifier
+        :return: CoffeePlace object
         """
         self.sparql_q.resetQuery()
         self.sparql_q.setQuery("""
@@ -118,15 +118,15 @@ class RDFDao:
         result = results["results"]["bindings"]
 
         if len(result) == 1:  # Must be just one result
-            return CoffeeShop(result[0])
+            return CoffeePlace(result[0])
 
         return None
 
     def get_menu_products(self, menu, lang='en'):
         """
-        Retrieves information about a café
-        :param id: Coffee shop identifier
-        :return: CoffeeShop object
+        Retrieves information about a café menu
+        :param menu: Menu identifier
+        :return: Set of Product objects
         """
         self.sparql_q.resetQuery()
         self.sparql_q.setQuery("""
@@ -139,8 +139,10 @@ class RDFDao:
         PREFIX dbo: <http://dbpedia.org/ontology/>
         PREFIX dbr: <http://dbpedia.org/resource/>
         SELECT * WHERE {{
-          :{menu}    a               dbr:Menu ;
+          :{menu}   a               dbr:Menu ;
                     schema:Product  ?prod_uri .
+          ?cp       schema:menu     :{menu} ;
+                    rdfs:label      ?cp_name .
           ?prod_uri rdfs:label      ?name ;
                     schema:price    ?price ;
                     schema:priceCurrency    ?currency ;
@@ -157,39 +159,13 @@ class RDFDao:
         self.sparql_q.setReturnFormat(JSON)
         results = self.sparql_q.query().convert()
 
+        coffee_place_name = results["results"]["bindings"][0]["cp_name"]["value"]
+
         products = set()
         for result in results["results"]["bindings"]:
             products.add(Product(result))
 
-        return products
-
-    def example(self):
-        self.sparql_q.resetQuery()
-        self.sparql_q.setQuery("""
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX dbp: <http://dbpedia.org/property/>
-        PREFIX dbr: <http://dbpedia.org/resource/>
-        PREFIX dbo: <http://dbpedia.org/ontology/>
-        PREFIX db: <http://dbpedia.org/>
-
-        SELECT * WHERE {
-          ?x rdfs:label "Hot Chocolate" .
-          ?x a ?choco_dbp
-          SERVICE <http://dbpedia.org/sparql> {
-            ?choco_dbp rdfs:comment ?res .
-            FILTER (lang(?res)='en')}
-        }
-        LIMIT 10
-        """)
-
-        self.sparql_q.setReturnFormat(JSON)
-        results = self.sparql_q.query().convert()
-
-        print(results)
-
-        for result in results["results"]["bindings"]:
-            print(result["res"]["value"])
+        return dict(cp_name=coffee_place_name, products=products)
 
     def restart_db(self):
         """
@@ -207,7 +183,8 @@ class RDFDao:
         self.sparql_u.setQuery(db)
         self.sparql_u.query()
 
-        print('RDF Database restarted.')
+        msg = 'RDF Database restarted.'
+        return msg
 
 
 

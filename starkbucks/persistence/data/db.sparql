@@ -42,6 +42,28 @@ INSERT DATA {
             schema:email "modoo@starkbucks.es" ;
             schema:menu :m2 .
 
+    :cp3 	:id 3 ;
+            a schema:CafeOrCoffeeShop ;
+            dc:subject :starkbucks ;
+            rdfs:label "Starkbucks Uría" ;
+            foaf:phone 985333333 ;
+            schema:address :addr3 ;
+            dbo:country dbr:Spain ;
+            georss:point "43.3634184 -5.8509048" ;
+            schema:email "uria@starkbucks.es" ;
+            schema:menu :m3 .
+
+    :cp4 	:id 4 ;
+            a schema:CafeOrCoffeeShop ;
+            dc:subject :starkbucks ;
+            rdfs:label "Starkbucks EIIO" ;
+            foaf:phone 985444444 ;
+            schema:address :addr4 ;
+            dbo:country dbr:Spain ;
+            georss:point "43.3562166 -5.8532571" ;
+            schema:email "eiio@starkbucks.es" ;
+            schema:menu :m4 .
+
 
     # Addresses
 
@@ -50,9 +72,19 @@ INSERT DATA {
             schema:postalCode "33429" ;
             schema:addressCountry "ES" .
 
-    :addr2 schema:streetAddress "C/ Arturo Pérez Buylla, 5, Centro Comercial Espacio Buenavista. Local 3.46" ;
+    :addr2 schema:streetAddress "C/ Arturo Pérez Buylla, 5, Centro Comercial Espacio Buenavista" ;
             schema:addressLocality dbr:Oviedo ;
             schema:postalCode "33005" ;
+            schema:addressCountry "ES" .
+
+    :addr3 schema:streetAddress "Calle Uría, 26" ;
+            schema:addressLocality dbr:Oviedo ;
+            schema:postalCode "33003" ;
+            schema:addressCountry "ES" .
+
+    :addr4 schema:streetAddress "Calle Valdés Salas" ;
+            schema:addressLocality dbr:Oviedo ;
+            schema:postalCode "33007" ;
             schema:addressCountry "ES" .
 
     # Menus
@@ -60,16 +92,34 @@ INSERT DATA {
     :m1	a dbr:Menu ;
             schema:Product :prod1 ;
             schema:Product :prod2 ;
-            schema:Product :prod4 .
+            schema:Product :prod6 ;
+            schema:Product :prod4 ;
+            schema:Product :prod10 .
 
     :m2	a dbr:Menu ;
             schema:Product :prod1 ;
             schema:Product :prod2 ;
-            schema:Product :prod3 .
+            schema:Product :prod5 ;
+            schema:Product :prod3 ;
+            schema:Product :prod9 .
+
+    :m3	a dbr:Menu ;
+            schema:Product :prod5 ;
+            schema:Product :prod2 ;
+            schema:Product :prod7 ;
+            schema:Product :prod3 ;
+            schema:Product :prod8 .
+
+    :m4	a dbr:Menu ;
+            schema:Product :prod2 ;
+            schema:Product :prod4 ;
+            schema:Product :prod6 ;
+            schema:Product :prod8 ;
+            schema:Product :prod10 .
 
     # Products (Images from www.starbucks.com)
 
-    :prod1 dc:type dbr:Coffee ;
+    :prod1 dc:type dbr:Drink ;
             a dbr:Cappuccino ;
             rdfs:label "Capuccino" @en ;
             rdfs:label "Capuchino" @es ;
@@ -77,7 +127,7 @@ INSERT DATA {
             schema:priceCurrency "EUR" ;
             foaf:depiction "http://globalassets.starbucks.com/assets/43c3301d81bd4ea4a9fec5beaf43a541.jpg" .
 
-    :prod2 dc:type dbr:Coffee ;
+    :prod2 dc:type dbr:Drink ;
             a dbr:Latte ;
             rdfs:label "Caffè Latte" @en ;
             rdfs:label "Café con leche" @es ;
@@ -85,7 +135,7 @@ INSERT DATA {
             schema:priceCurrency "EUR" ;
             foaf:depiction "http://globalassets.starbucks.com/assets/20229527c1c240439ddbc81bf821d95e.jpg" .
 
-    :prod3 dc:type dbr:Coffee ;
+    :prod3 dc:type dbr:Drink ;
             a dbr:Latte_macchiato ;
             rdfs:label "Caramel Macchiato" @en ;
             rdfs:label "Macchiato de caramelo" @es ;
@@ -93,12 +143,62 @@ INSERT DATA {
             schema:priceCurrency "EUR" ;
             foaf:depiction "http://globalassets.starbucks.com/assets/130690c11fe64de192cdf74bae6cb019.jpg" .
 
-    :prod4 dc:type dbr:Chocolate ;
+    :prod4 dc:type dbr:Drink ;
             a dbr:Hot_chocolate ;
             rdfs:label "Hot Chocolate" @en ;
             rdfs:label "Chocolate caliente" @es ;
             schema:price 2.15 ;
             schema:priceCurrency "EUR" ;
             foaf:depiction "http://globalassets.starbucks.com/assets/f6d9e4e674cd4859b6f66a3a34b1e973.jpg" .
+
+    :prod5 dc:type dbr:Bakery ;
+            a dbr:Muffin ;
+            rdfs:label "Blueberry Muffin" @en ;
+            rdfs:label "Muffin con arándanos" @es ;
+            schema:price 3.05 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/0008cc8f22ba4d51999297d4cc9c78c0.jpg" .
+
+    :prod6 dc:type dbr:Bakery ;
+            a dbr:Croissant ;
+            rdfs:label "Butter Croissant" @en ;
+            rdfs:label "Croissant de mantequilla" @es ;
+            schema:price 1.80 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/86b49942564d49b49f6261ece5a527e4.jpg" .
+
+    :prod7 dc:type dbr:Bakery ;
+            a dbr:Bagel ;
+            rdfs:label "Plain Bagel" @en ;
+            rdfs:label "Bagel" @es ;
+            schema:price 1.50 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/b5fed282e665482094729b35e276db67.jpg" .
+
+    :prod8 dc:type dbr:Bakery ;
+            a dbr:Doughnut ;
+            rdfs:label "Chocolate Doughnut" @en ;
+            rdfs:label "Donut de chocolate" @es ;
+            schema:price 1.95 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/b5d3d321a5274034808592813f5bc2d7.jpg" .
+
+
+    :prod9 dc:type dbr:Drink ;
+            a dbr:Iced_tea ;
+            rdfs:label "Iced tea" @en ;
+            rdfs:label "Té helado" @es ;
+            schema:price 1.45 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/42750ebdb4344448bb1fa48b3e6be1bf.jpg" .
+
+    :prod10 dc:type dbr:Drink ;
+            a dbr:Frappuccino ;
+            rdfs:label "Cinnamon Dolce Frappuccino" @en ;
+            rdfs:label "Frappuccino de canela" @es ;
+            schema:price 3.15 ;
+            schema:priceCurrency "EUR" ;
+            foaf:depiction "http://globalassets.starbucks.com/assets/76ffa3a771c8453a99e072b8c0b874f1.jpg" .
+
 
 }
