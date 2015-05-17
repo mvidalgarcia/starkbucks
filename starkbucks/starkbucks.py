@@ -1,6 +1,6 @@
 __author__ = 'mvidalgarcia'
 
-from bottle import route, run, view
+from bottle import route, run, view, post, request
 from .persistence.rdf_dao import RDFDao
 
 rdfdao = RDFDao()
@@ -33,5 +33,37 @@ def coffeeplace(id):
 @view('menu')
 def menu(id):
     return rdfdao.get_menu_products(id)
+
+@route('/new_form')
+@view('new_form')
+def new_form():
+    return dict(products=rdfdao.get_all_products())
+
+
+@post('/new')
+def new():
+    name = request.forms.get('name')
+    phone = request.forms.get('phone')
+    openhr = request.forms.get('openhr')
+    country = request.forms.get('country')
+    lat = request.forms.get('lat')
+    lng = request.forms.get('lng')
+    email = request.forms.get('email')
+    locality = request.forms.get('locality')
+    street = request.forms.get('street')
+    postal = request.forms.get('postal')
+    code = request.forms.get('code')
+    id_products = []
+    for product in rdfdao.get_all_products():
+        id = request.forms.get(product['name'])
+        if id is not None:
+            id_products.append(request.forms.get(product['name']))
+
+    # Save call
+    msg = rdfdao.create_coffee_place(id_products, name, phone, openhr, country,
+                                     lat, lng, email, locality, street, postal, code)
+
+    return msg
+
 
 

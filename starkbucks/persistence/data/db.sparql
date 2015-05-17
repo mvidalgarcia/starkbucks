@@ -1,6 +1,5 @@
 PREFIX : <http://starkbucks.es/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dbr: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -25,10 +24,16 @@ INSERT DATA {
             dc:subject :starkbucks ;
             rdfs:label "Starkbucks Parque Principado" ;
             foaf:phone 985111111 ;
-            schema:address :addr1 ;
+            schema:openingHours "Mo-Sa 09:00-22:00" ;
             dbo:country dbr:Spain ;
             georss:point "43.389992 -5.804725" ;
             schema:email "principado@starkbucks.es" ;
+            schema:address [
+	            schema:streetAddress "Autovía A-66, Km 4,5 (acceso Santander)" ;
+	            schema:addressLocality <http://dbpedia.org/resource/Lugones_(Siero)> ; # Bug when brackets
+	            schema:postalCode "33429" ;
+	            schema:addressCountry "ES" 
+            ] ;
             schema:menu :m1 .
 
     :cp2 	:id 2 ;
@@ -36,10 +41,16 @@ INSERT DATA {
             dc:subject :starkbucks ;
             rdfs:label "Starkbucks Modoo" ;
             foaf:phone 985222222 ;
-            schema:address :addr2 ;
+            schema:openingHours "Mo-Sa 09:00-22:00" ;
             dbo:country dbr:Spain ;
             georss:point "43.3589134 -5.8608736" ;
             schema:email "modoo@starkbucks.es" ;
+            schema:address [
+	            schema:streetAddress "C/ Arturo Pérez Buylla, 5, Centro Comercial Espacio Buenavista" ;
+	            schema:addressLocality dbr:Oviedo ;
+	            schema:postalCode "33005" ;
+	            schema:addressCountry "ES"
+            ] ;
             schema:menu :m2 .
 
     :cp3 	:id 3 ;
@@ -47,10 +58,16 @@ INSERT DATA {
             dc:subject :starkbucks ;
             rdfs:label "Starkbucks Uría" ;
             foaf:phone 985333333 ;
-            schema:address :addr3 ;
+            schema:openingHours "Mo-Su 08:00-21:00" ;
             dbo:country dbr:Spain ;
             georss:point "43.3634184 -5.8509048" ;
             schema:email "uria@starkbucks.es" ;
+            schema:address [
+	            schema:streetAddress "Calle Uría, 26" ;
+	            schema:addressLocality dbr:Oviedo ;
+	            schema:postalCode "33003" ;
+	            schema:addressCountry "ES" 
+            ] ;
             schema:menu :m3 .
 
     :cp4 	:id 4 ;
@@ -58,34 +75,17 @@ INSERT DATA {
             dc:subject :starkbucks ;
             rdfs:label "Starkbucks EIIO" ;
             foaf:phone 985444444 ;
-            schema:address :addr4 ;
+            schema:openingHours "Mo-Su 08:00-20:00" ;
             dbo:country dbr:Spain ;
             georss:point "43.3562166 -5.8532571" ;
             schema:email "eiio@starkbucks.es" ;
+            schema:address [
+	            schema:streetAddress "Calle Valdés Salas" ;
+	            schema:addressLocality dbr:Oviedo ;
+	            schema:postalCode "33007" ;
+	            schema:addressCountry "ES"
+            ] ;
             schema:menu :m4 .
-
-
-    # Addresses
-
-    :addr1 schema:streetAddress "Autovía A-66, Km 4,5 (acceso Santander)" ;
-            schema:addressLocality <http://dbpedia.org/resource/Lugones_(Siero)> ; # Bug when brackets
-            schema:postalCode "33429" ;
-            schema:addressCountry "ES" .
-
-    :addr2 schema:streetAddress "C/ Arturo Pérez Buylla, 5, Centro Comercial Espacio Buenavista" ;
-            schema:addressLocality dbr:Oviedo ;
-            schema:postalCode "33005" ;
-            schema:addressCountry "ES" .
-
-    :addr3 schema:streetAddress "Calle Uría, 26" ;
-            schema:addressLocality dbr:Oviedo ;
-            schema:postalCode "33003" ;
-            schema:addressCountry "ES" .
-
-    :addr4 schema:streetAddress "Calle Valdés Salas" ;
-            schema:addressLocality dbr:Oviedo ;
-            schema:postalCode "33007" ;
-            schema:addressCountry "ES" .
 
     # Menus
 

@@ -86,11 +86,10 @@ class RDFDao:
         self.sparql_q.setQuery("""
         PREFIX : <http://starkbucks.es/>
         PREFIX schema: <http://schema.org/>
-        PREFIX dc: <http://purl.org/dc/elements/1.1/>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-        PREFIX georss: <http://www.georss.org/georss/>
         PREFIX dbo: <http://dbpedia.org/ontology/>
+        PREFIX georss: <http://www.georss.org/georss/>
         SELECT ?name ?phone ?coords ?email ?address ?country ?street ?postal ?locality ?menu WHERE {{
           ?cs       a   schema:CafeOrCoffeeShop ;
                     :id {id} ;
@@ -132,11 +131,8 @@ class RDFDao:
         self.sparql_q.setQuery("""
         PREFIX : <http://starkbucks.es/>
         PREFIX schema: <http://schema.org/>
-        PREFIX dc: <http://purl.org/dc/elements/1.1/>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-        PREFIX georss: <http://www.georss.org/georss/>
-        PREFIX dbo: <http://dbpedia.org/ontology/>
         PREFIX dbr: <http://dbpedia.org/resource/>
         SELECT * WHERE {{
           :{menu}   a               dbr:Menu ;
@@ -166,6 +162,134 @@ class RDFDao:
             products.add(Product(result))
 
         return dict(cp_name=coffee_place_name, products=products)
+
+    def get_all_products(self, lang='en'):
+        """
+        Retrieves all the products names
+        :return: All the products names and ids
+        """
+        self.sparql_q.resetQuery()
+        self.sparql_q.setQuery("""
+        PREFIX schema: <http://schema.org/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX dbr: <http://dbpedia.org/resource/>
+        SELECT DISTINCT ?prod_uri ?name WHERE {{
+          ?m        a               dbr:Menu ;
+                    schema:Product  ?prod_uri .
+          ?prod_uri rdfs:label      ?name ;
+
+          FILTER (lang(?name)='{lang}')
+        }}
+        """.format(lang=lang))
+
+        self.sparql_q.setReturnFormat(JSON)
+        results = self.sparql_q.query().convert()
+
+        products = []
+
+        for result in results["results"]["bindings"]:
+            product = dict(id=result['prod_uri']['value'].split('/')[-1],
+                           name=result['name']['value'])
+            products.append(product)
+
+        return products
+
+    def _get_next_id(self):
+        """
+        Get next coffee place id to write
+        :return: Next id
+        """
+        self.sparql_q.resetQuery()
+        self.sparql_q.setQuery("""
+        PREFIX : <http://starkbucks.es/>
+        PREFIX schema: <http://schema.org/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+        PREFIX dbo: <http://dbpedia.org/ontology/>
+        PREFIX georss: <http://www.georss.org/georss/>
+        SELECT (MAX(?id) as ?max) WHERE {{
+          ?cs       a   schema:CafeOrCoffeeShop ;
+                    :id ?id .
+        }}
+        """)
+
+        self.sparql_q.setReturnFormat(JSON)
+        results = self.sparql_q.query().convert()
+
+        result = results["results"]["bindings"]
+
+        if len(result) == 1:  # Must be just one result
+            next_id = int(result[0]['max']['value']) + 1
+            return next_id
+
+        return None
+
+    def create_coffee_place(self, id_products, name, phone, openhr, country,
+                            lat, lng, email, locality, street, postal, code):
+        """
+        Create new coffee place and its menu
+        :return: Message of status
+        """
+        next_id = self._get_next_id()
+
+        subquery_menu = ''
+        for id in id_products:
+            subquery_menu += 'schema:Product  :{} '.format(id)
+            if id != id_products[-1]:
+                subquery_menu += ';\n'
+            else:
+                subquery_menu += '.'
+
+        self.sparql_u.resetQuery()
+        self.sparql_u.method = 'POST'
+        query = """
+        PREFIX : <http://starkbucks.es/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX dbr: <http://dbpedia.org/resource/>
+        PREFIX dbo: <http://dbpedia.org/ontology/>
+        PREFIX dc: <http://purl.org/dc/elements/1.1/>
+        PREFIX schema: <http://schema.org/>
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+        PREFIX georss: <http://www.georss.org/georss/>
+        INSERT DATA {{
+            :cp{next_id}    :id {next_id} ;
+            a schema:CafeOrCoffeeShop ;
+            dc:subject :starkbucks ;
+            rdfs:label "{name}" ;
+            foaf:phone {phone} ;
+            schema:openingHours "{openhr}" ;
+            dbo:country dbr:{country} ;
+            georss:point "{lat} {lng}" ;
+            schema:email "{email}" ;
+            schema:address [
+                schema:streetAddress "{street}" ;
+                schema:addressLocality dbr:{locality} ;
+                schema:postalCode "{postal}" ;
+                schema:addressCountry "{code}"
+            ] ;
+            schema:menu :m{next_id} .
+
+
+            :m{next_id}  a  dbr:Menu ;
+            {subquery}
+        }}
+        """.format(next_id=next_id, name=name, phone=phone,
+                   openhr=openhr, country=country, lat=lat,
+                   lng=lng, email=email, street=street,
+                   locality=locality, postal=postal, code=code,
+                   subquery=subquery_menu)
+
+        self.sparql_u.setQuery(query)
+
+        try:
+            self.sparql_u.query()
+            msg = "Coffee place created."
+            print(msg)
+            return msg
+        except Exception:
+            msg = "Something wrong happened creating a new coffee place."
+            print(msg)
+            return msg
 
     def restart_db(self):
         """
