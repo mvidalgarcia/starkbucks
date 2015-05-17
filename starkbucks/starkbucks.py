@@ -1,6 +1,6 @@
 __author__ = 'mvidalgarcia'
 
-from bottle import route, run, view, post, request
+from bottle import route, run, view, post, request, redirect
 from .persistence.rdf_dao import RDFDao
 
 rdfdao = RDFDao()
@@ -8,7 +8,6 @@ rdfdao = RDFDao()
 
 def start():
     run(host='0.0.0.0', port=8080, debug=True, reloader=True)
-
 
 
 @route('/restart')
@@ -26,13 +25,38 @@ def index():
 @route('/coffeeplace/<id>')
 @view('coffeeplace')
 def coffeeplace(id):
-    return rdfdao.get_coffee_place(id).__dict__
+    data = rdfdao.get_coffee_place(id)
+    if isinstance(data, str):  # Error
+        print(data)
+        return data
+    else:
+        return data.__dict__
 
 
 @route('/menu/<id>')
 @view('menu')
 def menu(id):
     return rdfdao.get_menu_products(id)
+
+
+@route('/admin')
+@view('admin')
+def admin():
+    pass
+
+
+@route('/delete_form')
+@view('delete_form')
+def delete_form():
+    return dict(coffee_places=rdfdao.get_all_coffee_places())
+
+
+@route('/delete/<id>')
+@view('index')
+def delete(id):
+    rdfdao.delete_coffee_place(id)
+    redirect('/')
+
 
 @route('/new_form')
 @view('new_form')
@@ -60,10 +84,9 @@ def new():
             id_products.append(request.forms.get(product['name']))
 
     # Save call
-    msg = rdfdao.create_coffee_place(id_products, name, phone, openhr, country,
-                                     lat, lng, email, locality, street, postal, code)
-
-    return msg
+    rdfdao.create_coffee_place(id_products, name, phone, openhr, country,
+                               lat, lng, email, locality, street, postal, code)
+    redirect('/')
 
 
 

@@ -11,6 +11,10 @@
         % for local in locals:
         <a href="coffeeplace/{{local['id']}}">{{local['name']}}</a>
         % end
+        <footer>
+        <br>
+            <a href="/admin">Admin panel</a>
+        </footer>
     </body>
 </body>
 

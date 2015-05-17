@@ -14,7 +14,7 @@ ENDPOINT_UPDATE = 'http://156.35.98.27:3030/DB/update'
 
 class RDFDao:
     """
-    Class to retrieve RDF data from Fuseki Server
+    Class to manage RDF data from Fuseki Server
     """
     def __init__(self):
         self.sparql_q = SPARQLWrapper(ENDPOINT_QUERY)
@@ -82,19 +82,24 @@ class RDFDao:
         :param id: Coffee place identifier
         :return: CoffeePlace object
         """
+
         self.sparql_q.resetQuery()
         self.sparql_q.setQuery("""
         PREFIX : <http://starkbucks.es/>
-        PREFIX schema: <http://schema.org/>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+        PREFIX dbr: <http://dbpedia.org/resource/>
         PREFIX dbo: <http://dbpedia.org/ontology/>
+        PREFIX dc: <http://purl.org/dc/elements/1.1/>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX schema: <http://schema.org/>
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
         PREFIX georss: <http://www.georss.org/georss/>
-        SELECT ?name ?phone ?coords ?email ?address ?country ?street ?postal ?locality ?menu WHERE {{
+        SELECT * WHERE {{
           ?cs       a   schema:CafeOrCoffeeShop ;
                     :id {id} ;
                     rdfs:label              ?name ;
                     foaf:phone              ?phone ;
+                    schema:openingHours     ?openhr ;
                     georss:point            ?coords ;
                     schema:email            ?email ;
                     schema:address          ?address ;
@@ -112,7 +117,13 @@ class RDFDao:
         """.format(id=id, lang=lang))
 
         self.sparql_q.setReturnFormat(JSON)
-        results = self.sparql_q.query().convert()
+
+        try:
+            results = self.sparql_q.query().convert()
+        except Exception:
+            msg = "DBPedia might be under maintenance."
+            print(msg)
+            return msg
 
         result = results["results"]["bindings"]
 
@@ -194,6 +205,35 @@ class RDFDao:
 
         return products
 
+    def get_all_coffee_places(self):
+        """
+        Retrieves all the coffee places names
+        :return: All the coffee places names and ids
+        """
+        self.sparql_q.resetQuery()
+        self.sparql_q.setQuery("""
+        PREFIX : <http://starkbucks.es/>
+        PREFIX schema: <http://schema.org/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        SELECT ?id ?name WHERE {
+          ?cp   a           schema:CafeOrCoffeeShop ;
+                :id         ?id ;
+                rdfs:label  ?name .
+        }
+        """)
+
+        self.sparql_q.setReturnFormat(JSON)
+        results = self.sparql_q.query().convert()
+
+        coffee_places = []
+
+        for result in results["results"]["bindings"]:
+            coffee_place = dict(id=result['id']['value'],
+                           name=result['name']['value'])
+            coffee_places.append(coffee_place)
+
+        return coffee_places
+
     def _get_next_id(self):
         """
         Get next coffee place id to write
@@ -204,9 +244,6 @@ class RDFDao:
         PREFIX : <http://starkbucks.es/>
         PREFIX schema: <http://schema.org/>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-        PREFIX dbo: <http://dbpedia.org/ontology/>
-        PREFIX georss: <http://www.georss.org/georss/>
         SELECT (MAX(?id) as ?max) WHERE {{
           ?cs       a   schema:CafeOrCoffeeShop ;
                     :id ?id .
@@ -283,11 +320,44 @@ class RDFDao:
 
         try:
             self.sparql_u.query()
-            msg = "Coffee place created."
+            msg = "Coffee place id={} created.".format(next_id)
             print(msg)
             return msg
         except Exception:
             msg = "Something wrong happened creating a new coffee place."
+            print(msg)
+            return msg
+
+    def delete_coffee_place(self, id):
+        self.sparql_u.resetQuery()
+        self.sparql_u.method = 'POST'
+        self.sparql_u.setQuery("""
+        PREFIX : <http://starkbucks.es/>
+        DELETE {{ :cp{id} ?p  ?o . }}
+        WHERE {{ :cp{id} ?p  ?o . }}
+        """.format(id=id))
+
+        try:
+            self.sparql_u.query()
+        except Exception:
+            msg = "Something wrong happened deleting an existing coffee place."
+            print(msg)
+            return msg
+
+
+        self.sparql_u.setQuery("""
+        PREFIX : <http://starkbucks.es/>
+        DELETE {{ :m{id}  ?p  ?o . }}
+        WHERE {{ :m{id}  ?p  ?o . }}
+        """.format(id=id))
+
+        try:
+            self.sparql_u.query()
+            msg = "Coffee place id={} deleted.".format(id)
+            print(msg)
+            return msg
+        except Exception:
+            msg = "Something wrong happened deleting the coffee place menu."
             print(msg)
             return msg
 

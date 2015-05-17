@@ -21,7 +21,7 @@
         <p>{{street}}
         <p>{{postal}}</p>
         <p>{{locality}}</p>
-        <a href="/menu/{{menu}}">Show menu</p>
+        <a href="/menu/{{menu}}">Show menu</p></a>
         <div id='map'></div>
         <script>
         L.mapbox.accessToken = 'pk.eyJ1IjoibXZpZGFsZ2FyY2lhIiwiYSI6IjRQME5YVlUifQ.BHfG2NF5m_sdBXLr_HOIiQ';
