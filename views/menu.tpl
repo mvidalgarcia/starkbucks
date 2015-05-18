@@ -10,14 +10,14 @@
 		    <h1>{{cp_name}} Menu</h1>
 		    % for product in products:
 				<div class='col-xs-12'>
-				<div class="row product">
-		            <h3>{{product.name}}</h3>
-		            <img src={{product.photo}} alt="{{product.name}} photo" height='300px'>
-		            <br><br>
-		            <p>{{product.description}}</p>
-		            <p class="price">{{product.price}} {{product.currency}}</p>
-		            <hr>
-				</div>
+                    <div itemscope itemtype="http://schema.org/Product" class="row product">
+                        <h3 itemprop="name">{{product.name}}</h3>
+                        <img itemprop="image" src={{product.photo}} alt="{{product.name}} photo" height='300px'>
+                        <br><br>
+                        <p itemprop="description">{{product.description}}</p>
+                        <p class="price"><span itemprop="price">{{product.price}}</span> <span itemprop="priceCurrency">{{product.currency}}</span></p>
+                        <hr>
+                    </div>
 				</div>
 		    % end
 		</div>

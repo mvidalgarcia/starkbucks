@@ -12,10 +12,7 @@ def start():
 
 @route('/static/<filename:path>')
 def server_static(filename):
-    print(filename)
-    a = static_file(filename, root='./static')
-    print(a)
-    return a
+    return static_file(filename, root='./static')
 
 
 @route('/restart')

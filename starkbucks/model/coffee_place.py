@@ -5,6 +5,7 @@ class CoffeePlace:
     def __init__(self, sparqldict):
         self.name = sparqldict["name"]["value"]
         self.phone = sparqldict["phone"]["value"]
+        self.open_hr = sparqldict["open_hr"]["value"]
         self.lat = sparqldict["coords"]["value"].split()[0]
         self.lng = sparqldict["coords"]["value"].split()[1]
         self.email = sparqldict["email"]["value"]

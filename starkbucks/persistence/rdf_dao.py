@@ -99,7 +99,7 @@ class RDFDao:
                     :id {id} ;
                     rdfs:label              ?name ;
                     foaf:phone              ?phone ;
-                    schema:openingHours     ?openhr ;
+                    schema:openingHours     ?open_hr ;
                     georss:point            ?coords ;
                     schema:email            ?email ;
                     schema:address          ?address ;

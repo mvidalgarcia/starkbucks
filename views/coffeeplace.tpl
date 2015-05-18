@@ -13,12 +13,13 @@
 		</div>
 	    <div class='container'>
 	        <div class="col-xs-12 col-sm-6" id='map'></div>
-	        <div class='col-xs-12 col-sm-6'>
-		        <div class="cafe-title">{{name}}</div>
+	        <div itemscope itemtype="http://schema.org/CafeOrCoffeeShop" class='col-xs-12 col-sm-6'>
+		        <div class="cafe-title" itemprop="name">{{name}}</div>
 		        <div class="cafe-info">
-			        <p>Address: {{street}}, {{locality}}, {{postal}}, {{country}}</p>
-			        <p>Telephone: {{phone}}</p>
-			        <p>Contact: {{email}}</p>
+			        <p itemprop="address">Address: {{street}}, {{locality}}, {{postal}}, {{country}}</p>
+			        <p itemprop="openingHours">Schedule: {{open_hr}}</p>
+			        <p itemprop="telephone">Telephone: {{phone}}</p>
+			        <p itemprop="email">Contact: {{email}}</p>
 		        </div>
 		        <a class="show-btn" href="/menu/{{menu}}">Show menu</a>
 		    </div>
