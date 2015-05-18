@@ -378,6 +378,7 @@ class RDFDao:
         self.sparql_u.query()
 
         msg = 'RDF Database restarted.'
+        print(msg)
         return msg
 
 

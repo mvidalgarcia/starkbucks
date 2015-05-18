@@ -1,0 +1,51 @@
+@import url(http://fonts.googleapis.com/css?family=Bree+Serif);
+
+html {
+	background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../images/background.jpg);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed; 
+	background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	-webkit-background-size: cover;
+}
+
+.logo {
+	opacity: 0.9;
+}
+
+body {
+	background-color: transparent;
+	color: rgba(255,255,255,0.9);
+	padding: 50px;
+	text-align: center;
+	font-family: 'Bree Serif', serif;
+}
+
+footer {
+	position:fixed;
+	left:0px;
+	bottom:0px;
+	height:50px;
+	width:100%;
+	color: rgba(255,255,255,0.5);
+}
+
+.locals {
+	padding-top: 2em;
+}
+
+.locals div {
+	padding-top: 1em;
+	font-size: 1.2em;
+}
+
+.locals a {
+	color: #4DB6AC;
+	opacity: 0.8;
+}
+
+.locals a:hover {
+	color: #80CBC4;
+}

@@ -1,6 +1,6 @@
 __author__ = 'mvidalgarcia'
 
-from bottle import route, run, view, post, request, redirect
+from bottle import route, run, view, post, request, redirect, static_file
 from .persistence.rdf_dao import RDFDao
 
 rdfdao = RDFDao()
@@ -10,10 +10,19 @@ def start():
     run(host='0.0.0.0', port=8080, debug=True, reloader=True)
 
 
+@route('/static/<filename:path>')
+def server_static(filename):
+    print(filename)
+    a = static_file(filename, root='./static')
+    print(a)
+    return a
+
+
 @route('/restart')
 @view('restart')
 def restart():
     return dict(msg=rdfdao.restart_db())
+
 
 @route('/')
 @view('index')
