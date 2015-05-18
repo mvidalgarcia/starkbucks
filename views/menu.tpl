@@ -15,7 +15,9 @@
                         <img itemprop="image" src={{product.photo}} alt="{{product.name}} photo" height='300px'>
                         <br><br>
                         <p itemprop="description">{{product.description}}</p>
-                        <p class="price"><span itemprop="price">{{product.price}}</span> <span itemprop="priceCurrency">{{product.currency}}</span></p>
+                        <div itemscope itemtype="http://schema.org/PriceSpecification">
+                            <p class="price"><span itemprop="price">{{product.price}}</span> <span itemprop="priceCurrency">{{product.currency}}</span></p>
+                        </div>
                         <hr>
                     </div>
 				</div>

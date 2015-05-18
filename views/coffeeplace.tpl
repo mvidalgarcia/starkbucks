@@ -16,10 +16,10 @@
 	        <div itemscope itemtype="http://schema.org/CafeOrCoffeeShop" class='col-xs-12 col-sm-6'>
 		        <div class="cafe-title" itemprop="name">{{name}}</div>
 		        <div class="cafe-info">
-			        <p itemprop="address">Address: {{street}}, {{locality}}, {{postal}}, {{country}}</p>
-			        <p itemprop="openingHours">Schedule: {{open_hr}}</p>
-			        <p itemprop="telephone">Telephone: {{phone}}</p>
-			        <p itemprop="email">Contact: {{email}}</p>
+			        <p>Address: <span itemprop="address">{{street}}, {{locality}}, {{postal}}, {{country}}</span></p>
+			        <p>Schedule: <span itemprop="openingHours">{{open_hr}}</span></p>
+			        <p>Telephone: <span itemprop="telephone">{{phone}}</span></p>
+			        <p>Contact: <span itemprop="email">{{email}}</span></p>
 		        </div>
 		        <a class="show-btn" href="/menu/{{menu}}">Show menu</a>
 		    </div>
