@@ -3,10 +3,10 @@
     % include('head.tpl', title='New - Starkbucks')
     </head>
     <body>
-        <header>
-            <h1><a href="/">Starkbucks</a></h1>
-        </header>
-        <h2>New Coffee Place</h2>
+        <div class='page-header'>
+			<a href='/'>Starkbucks</a>
+		</div>
+        <h1>New Coffee Place</h1>
         <form action="/new" method="post">
             <p>Name: <input name="name" type="text" required/></p>
             <p>Phone: <input name="phone" type="text" required/></p>
@@ -19,11 +19,12 @@
             <p>Street Address: <input name="street" type="text" required/></p>
             <p>Postal code: <input name="postal" type="text" required/></p>
             <p>Country code: <input name="code" type="text" placeholder="Format ES, UK ..." required/></p>
+            <br>
             <h3>Choose menu products</h3>
             % for product in products:
             <input name="{{product['name']}}" value="{{product['id']}}" type="checkbox" /> {{product['name']}}<br>
             % end
-            <br><input value="Save" type="submit" />
+            <br><input class="show-btn" value="Save" type="submit" />
         </form>
     </body>
 </body>

@@ -37,6 +37,15 @@ body {
 	padding: 0
 }
 
+a {
+	color: #4cb5aa;
+	opacity: 0.8;
+}
+
+a:hover {
+	color: #80CBC4;
+}
+
 .page-header {
 	background-color: #006341;
 	margin: 0px;
@@ -53,6 +62,7 @@ body {
 
 .page-header a {
 	color: white;
+	opacity: 1;
 }
 
 footer {
@@ -63,6 +73,7 @@ footer {
 	width:100%;
 	color: rgba(255,255,255,0.5);
 }
+
 
 .locals {
 	padding-top: 2em;
@@ -77,14 +88,6 @@ footer {
 	font-size: 1.2em;
 }
 
-.locals a {
-	color: #4cb5aa;
-	opacity: 0.8;
-}
-
-.locals a:hover {
-	color: #80CBC4;
-}
 
 .cafe-title {
 	font-family: 'Lato', sans-serif;
@@ -105,6 +108,7 @@ footer {
 	font-weight: 900;
 	letter-spacing: 2px;
 	color: white;
+	opacity: 1;
 	padding: 10px;
 	margin-top: 5px;
 	background-color: #006341; 

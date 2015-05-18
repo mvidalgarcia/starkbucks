@@ -3,10 +3,10 @@
     % include('head.tpl', title='Delete - Starkbucks')
     </head>
     <body>
-        <header>
-            <h1><a href="/">Starkbucks</a></h1>
-        </header>
-        <h2>Delete a Coffee Place</h2>
+        <div class='page-header'>
+			<a href='/'>Starkbucks</a>
+		</div>
+        <h1>Delete a Coffee Place</h1>
         <form action="/delete" method="post">
             % for coffee_place in coffee_places:
                 <p>
