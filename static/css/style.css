@@ -1,4 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Bree+Serif);
+@import url(http://fonts.googleapis.com/css?family=Lato:400,900);
 
 html {
 	background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../images/background.jpg);
@@ -11,16 +12,47 @@ html {
 	-webkit-background-size: cover;
 }
 
+/* mobile */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+	img { max-width: 100%; }
+}
+
 .logo {
+	margin-top: 30px;
+	margin-bottom: 20px;
 	opacity: 0.9;
+	width: 300px;
+}
+
+.slogan {
+	font-size: 18pt;
 }
 
 body {
 	background-color: transparent;
 	color: rgba(255,255,255,0.9);
-	padding: 50px;
 	text-align: center;
 	font-family: 'Bree Serif', serif;
+	margin: 0;
+	padding: 0
+}
+
+.page-header {
+	background-color: #006341;
+	margin: 0px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	font-size: 20pt;
+	font-family: 'Lato', sans-serif;
+	text-transform: uppercase;
+	font-weight: 900;
+	letter-spacing: 2px;
+	border: 0;
+	margin-bottom: 80px;
+}
+
+.page-header a {
+	color: white;
 }
 
 footer {
@@ -34,6 +66,10 @@ footer {
 
 .locals {
 	padding-top: 2em;
+	font-family: 'Lato', sans-serif;
+	text-transform: uppercase;
+	font-weight: 900;
+	letter-spacing: 2px;
 }
 
 .locals div {
@@ -42,10 +78,68 @@ footer {
 }
 
 .locals a {
-	color: #4DB6AC;
+	color: #4cb5aa;
 	opacity: 0.8;
 }
 
 .locals a:hover {
 	color: #80CBC4;
+}
+
+.cafe-title {
+	font-family: 'Lato', sans-serif;
+	text-transform: uppercase;
+	font-weight: 900;
+	letter-spacing: 2px;
+	font-size: 1.5em;
+	margin-bottom: 1em;
+}
+.cafe-info {
+	padding-top: 3em;
+	padding-bottom: 4em;
+}
+
+.show-btn {
+	font-family: 'Lato', sans-serif;
+	text-transform: uppercase;
+	font-weight: 900;
+	letter-spacing: 2px;
+	color: white;
+	padding: 10px;
+	margin-top: 5px;
+	background-color: #006341; 
+}
+
+.show-btn:hover {
+	background-color: #00784e;
+	color: white;
+	text-decoration: none;
+}
+
+.product {
+	margin: 1em 15em;
+	
+}
+
+h1, h3 {
+	font-family: 'Lato', sans-serif;
+	text-transform: uppercase;
+	font-weight: 900;
+	letter-spacing: 2px;
+	margin-bottom: 1em;
+}
+
+.price {
+	font-family: 'Lato', sans-serif;
+	text-transform: uppercase;
+	font-weight: 900;
+	letter-spacing: 2px;
+	margin: 1em;
+	font-size: 1.25em;
+	color: #4cb5aa;
+	opacity: 0.8;
+}
+
+hr {
+	opacity: 0.5;
 }
