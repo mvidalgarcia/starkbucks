@@ -76,3 +76,9 @@ Note that virtual environment must be activated in order to run the server.
   
 I recommend using `screen` in order to launch python files and leave them running.
 More information about `screen` in Unix environments [here](https://kb.iu.edu/d/acuy). 
+
+##  Screenshots
+
+<img src="http://s3.postimg.org/h47e1u3oz/screenshot_index.jpg" height=350px></img>  
+
+<img src="http://s9.postimg.org/lhf54nkdr/screenshot_cafe.jpg" height=350px></img>
